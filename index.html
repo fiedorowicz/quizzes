@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>English Conditionals Quiz</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; color: #333; }
+        .pojemnik { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background-color: #fff; transition: 0.2s; }
+        button:hover { background-color: #e0e0e0; }
+        button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #nastepne { background-color: #4CAF50; color: white; display: none; border: none; font-weight: bold; margin-top: 15px; }
+        #nastepne:hover { background-color: #45a049; }
+        #wynik { height: 25px; font-weight: bold; margin-top: 20px; font-size: 18px; }
+        #wyjasnienie { color: #0056b3; font-size: 15px; font-weight: bold; margin-top: 5px; height: 20px; }
+        #postep { color: #888; font-size: 14px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="pojemnik">
+        <h1>Conditionals Quiz</h1>
+        <h3 id="licznik">Punkty: 0</h3>
+        <p id="postep"></p>
+        
+        <h2 id="pytanie">Ładowanie...</h2>
+        
+        <div id="odpowiedzi"></div>
+        
+        <p id="wynik"></p>
+        <p id="wyjasnienie"></p>
+        
+        <button id="nastepne" onclick="nastepnePytanie()">Następne pytanie</button>
+    </div>
+
+    <script>
+        const bazaPytan = [
+            { typ: "0 Conditional", tresc: "If you freeze water, it ___ solid.", poprawna: "becomes", opcje: ["becomes", "became", "will become", "would become"] },
+            { typ: "1st Conditional", tresc: "If it rains tomorrow, I ___ an umbrella.", poprawna: "will take", opcje: ["take", "took", "will take", "would take"] },
+            { typ: "2nd Conditional", tresc: "If I ___ a million dollars, I would buy a mansion.", poprawna: "had", opcje: ["have", "had", "will have", "would have"] },
+            { typ: "0 Conditional", tresc: "If babies are hungry, they ___.", poprawna: "cry", opcje: ["cry", "cries", "will cry", "would cry"] },
+            { typ: "1st Conditional", tresc: "If she studies hard, she ___ the exam.", poprawna: "will pass", opcje: ["passes", "passed", "will pass", "would pass"] },
+            { typ: "2nd Conditional", tresc: "If I ___ you, I would apologize.", poprawna: "were", opcje: ["am", "were", "will be", "would be"] },
+            { typ: "0 Conditional", tresc: "Plants die if they ___ enough water.", poprawna: "don't get", opcje: ["don't get", "didn't get", "won't get", "wouldn't get"] },
+            { typ: "1st Conditional", tresc: "I will call you if I ___ time later.", poprawna: "have", opcje: ["have", "had", "will have", "would have"] },
+            { typ: "2nd Conditional", tresc: "She would travel the world if she ___ more money.", poprawna: "had", opcje: ["has", "had", "will have", "would have"] },
+            { typ: "0 Conditional", tresc: "If you mix red and blue, you ___ purple.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+            { typ: "1st Conditional", tresc: "If we hurry, we ___ the bus.", poprawna: "won't miss", opcje: ["don't miss", "didn't miss", "won't miss", "wouldn't miss"] },
+            { typ: "2nd Conditional", tresc: "What would you do if you ___ a bear?", poprawna: "saw", opcje: ["see", "saw", "will see", "would see"] },
+            { typ: "0 Conditional", tresc: "Ice melts if you ___ it.", poprawna: "heat", opcje: ["heat", "heats", "heated", "will heat"] },
+            { typ: "1st Conditional", tresc: "What will you do if you ___ your keys?", poprawna: "lose", opcje: ["lose", "lost", "will lose", "would lose"] },
+            { typ: "2nd Conditional", tresc: "If he spoke English, he ___ that job.", poprawna: "would get", opcje: ["gets", "got", "will get", "would get"] },
+            { typ: "0 Conditional", tresc: "If people eat too much, they ___ fat.", poprawna: "get", opcje: ["get", "got", "will get", "would get"] },
+            { typ: "1st Conditional", tresc: "If they don't come soon, we ___ without them.", poprawna: "will leave", opcje: ["leave", "left", "will leave", "would leave"] },
+            { typ: "2nd Conditional", tresc: "I wouldn't do that if I ___ in your shoes.", poprawna: "were", opcje: ["am", "was", "were", "had been"] },
+            { typ: "1st Conditional", tresc: "She will be angry if you ___ late again.", poprawna: "are", opcje: ["are", "were", "will be", "would be"] },
+            { typ: "2nd Conditional", tresc: "If we lived in Italy, we ___ pizza every day.", poprawna: "would eat", opcje: ["eat", "ate", "will eat", "would eat"] }
+        ];
+
+        let aktualnyIndeks = 0;
+        let punkty = 0;
+
+        function pokazPytanie() {
+            document.getElementById('wynik').innerHTML = "";
+            document.getElementById('wyjasnienie').innerHTML = "";
+            document.getElementById('nastepne').style.display = "none";
+
+            let obecnePytanie = bazaPytan[aktualnyIndeks];
+            document.getElementById('pytanie').innerHTML = obecnePytanie.tresc;
+            document.getElementById('postep').innerHTML = "Pytanie " + (aktualnyIndeks + 1) + " z " + bazaPytan.length;
+
+            let przyciskiHTML = "";
+            for (let i = 0; i < obecnePytanie.opcje.length; i++) {
+                let opcja = obecnePytanie.opcje[i];
+                przyciskiHTML += `<button onclick="sprawdz(this, '${opcja}')">${opcja}</button>`;
+            }
+            document.getElementById('odpowiedzi').innerHTML = przyciskiHTML;
+        }
+
+        function sprawdz(kliknietyPrzycisk, wybranaOdpowiedz) {
+            let obecnePytanie = bazaPytan[aktualnyIndeks];
+            let poleWyniku = document.getElementById('wynik');
+            let poleWyjasnienia = document.getElementById('wyjasnienie');
+            
+            let wszystkiePrzyciski = document.getElementById('odpowiedzi').getElementsByTagName('button');
+            for(let btn of wszystkiePrzyciski) {
+                btn.disabled = true;
+            }
+
+            if (wybranaOdpowiedz === obecnePytanie.poprawna) {
+                poleWyniku.innerHTML = "Świetnie! Dobra odpowiedź.";
+                poleWyniku.style.color = "green";
+                kliknietyPrzycisk.style.backgroundColor = "#c8e6c9";
+                punkty++;
+                document.getElementById('licznik').innerHTML = "Punkty: " + punkty;
+            } else {
+                poleWyniku.innerHTML = "Pudło! Poprawna odpowiedź to: " + obecnePytanie.poprawna;
+                poleWyniku.style.color = "red";
+                kliknietyPrzycisk.style.backgroundColor = "#ffcdd2";
+            }
+
+            poleWyjasnienia.innerHTML = "Zastosowana konstrukcja: " + obecnePytanie.typ;
+            document.getElementById('nastepne').style.display = "inline-block";
+        }
+
+        function nastepnePytanie() {
+            aktualnyIndeks++;
+            
+            if (aktualnyIndeks < bazaPytan.length) {
+                pokazPytanie();
+            } else {
+                // TUTAJ ZNAJDUJE SIĘ NOWY KOD ODPOWIEDZIALNY ZA OCENĘ
+                let ocenaTekst = "";
+                if (punkty >= 18) {
+                    ocenaTekst = "Rewelacja! Jesteś mistrzem okresów warunkowych. 🏆";
+                } else if (punkty >= 14) {
+                    ocenaTekst = "Bardzo dobrze! Masz solidne podstawy. 👍";
+                } else if (punkty >= 10) {
+                    ocenaTekst = "Nieźle, ale warto jeszcze trochę poćwiczyć. 📚";
+                } else {
+                    ocenaTekst = "Ups, chyba musisz powtórzyć ten materiał. Nie poddawaj się! 💪";
+                }
+
+                document.getElementById('postep').innerHTML = "";
+                document.getElementById('pytanie').innerHTML = "Koniec quizu! Twój wynik: " + punkty + "/" + bazaPytan.length + "<br><br>" + ocenaTekst;
+                
+                document.getElementById('odpowiedzi').innerHTML = ""; 
+                document.getElementById('wyjasnienie').innerHTML = ""; 
+                document.getElementById('nastepne').style.display = "none";
+            }
+        }
+
+        pokazPytanie();
+    </script>
+</body>
+</html>
