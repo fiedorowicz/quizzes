@@ -11,6 +11,8 @@
         button:disabled { cursor: not-allowed; opacity: 0.6; }
         #nastepne { background-color: #4CAF50; color: white; display: none; border: none; font-weight: bold; margin-top: 15px; }
         #nastepne:hover { background-color: #45a049; }
+        #zagrajPonownie { background-color: #2196F3; color: white; display: none; border: none; font-weight: bold; margin-top: 20px; }
+        #zagrajPonownie:hover { background-color: #0b7dda; }
         #wynik { height: 25px; font-weight: bold; margin-top: 20px; font-size: 18px; }
         #wyjasnienie { color: #0056b3; font-size: 15px; font-weight: bold; margin-top: 5px; height: 20px; }
         #postep { color: #888; font-size: 14px; margin-bottom: 20px; }
@@ -30,9 +32,11 @@
         <p id="wyjasnienie"></p>
         
         <button id="nastepne" onclick="nastepnePytanie()">Następne pytanie</button>
+        <button id="zagrajPonownie" onclick="resetujQuiz()">Zagraj jeszcze raz</button>
     </div>
 
     <script>
+        // TUTAJ WRZUCASZ SWOJE 200 PYTAŃ
         const bazaPytan = [
             { typ: "0 Conditional", tresc: "If you freeze water, it ___ solid.", poprawna: "becomes", opcje: ["becomes", "became", "will become", "would become"] },
             { typ: "1st Conditional", tresc: "If it rains tomorrow, I ___ an umbrella.", poprawna: "will take", opcje: ["take", "took", "will take", "would take"] },
@@ -53,31 +57,248 @@
             { typ: "1st Conditional", tresc: "If they don't come soon, we ___ without them.", poprawna: "will leave", opcje: ["leave", "left", "will leave", "would leave"] },
             { typ: "2nd Conditional", tresc: "I wouldn't do that if I ___ in your shoes.", poprawna: "were", opcje: ["am", "was", "were", "had been"] },
             { typ: "1st Conditional", tresc: "She will be angry if you ___ late again.", poprawna: "are", opcje: ["are", "were", "will be", "would be"] },
-            { typ: "2nd Conditional", tresc: "If we lived in Italy, we ___ pizza every day.", poprawna: "would eat", opcje: ["eat", "ate", "will eat", "would eat"] }
+            { typ: "2nd Conditional", tresc: "If we lived in Italy, we ___ pizza every day.", poprawna: "would eat", opcje: ["eat", "ate", "will eat", "would eat"] },
+            { typ: "0 Conditional", tresc: "If you heat water to 100 degrees, it ___.", poprawna: "boils", opcje: ["boils", "boiled", "will boil", "would boil"] },
+{ typ: "1st Conditional", tresc: "If I have enough money, I ___ a new phone.", poprawna: "will buy", opcje: ["buy", "bought", "will buy", "would buy"] },
+{ typ: "2nd Conditional", tresc: "If I ___ a superpower, I would fly.", poprawna: "had", opcje: ["have", "had", "will have", "would have"] },
+{ typ: "0 Conditional", tresc: "If you mix blue and yellow, you ___ green.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If she ___ early, she will catch the train.", poprawna: "leaves", opcje: ["leave", "leaves", "left", "will leave"] },
+{ typ: "2nd Conditional", tresc: "If he knew the answer, he ___ us.", poprawna: "would tell", opcje: ["tells", "told", "will tell", "would tell"] },
+{ typ: "0 Conditional", tresc: "If people don't eat, they ___.", poprawna: "die", opcje: ["die", "dies", "will die", "would die"] },
+{ typ: "1st Conditional", tresc: "We will stay at home if it ___ tomorrow.", poprawna: "rains", opcje: ["rain", "rains", "rained", "will rain"] },
+{ typ: "2nd Conditional", tresc: "What would you do if you ___ the lottery?", poprawna: "won", opcje: ["win", "wins", "won", "would win"] },
+{ typ: "0 Conditional", tresc: "If you drop an apple, it ___.", poprawna: "falls", opcje: ["fall", "falls", "fell", "will fall"] },
+{ typ: "1st Conditional", tresc: "If they invite me, I ___ to the party.", poprawna: "will go", opcje: ["go", "went", "will go", "would go"] },
+{ typ: "2nd Conditional", tresc: "If I were you, I ___ that car.", poprawna: "wouldn't buy", opcje: ["don't buy", "didn't buy", "won't buy", "wouldn't buy"] },
+{ typ: "0 Conditional", tresc: "Wood ___ if you put it in water.", poprawna: "floats", opcje: ["float", "floats", "floated", "will float"] },
+{ typ: "1st Conditional", tresc: "If you don't hurry, you ___ the flight.", poprawna: "will miss", opcje: ["miss", "missed", "will miss", "would miss"] },
+{ typ: "2nd Conditional", tresc: "She ___ happier if she changed her job.", poprawna: "would be", opcje: ["is", "was", "will be", "would be"] },
+{ typ: "0 Conditional", tresc: "If babies are tired, they usually ___.", poprawna: "sleep", opcje: ["sleep", "sleeps", "slept", "will sleep"] },
+{ typ: "1st Conditional", tresc: "I will help you if I ___ free time.", poprawna: "have", opcje: ["have", "has", "had", "will have"] },
+{ typ: "2nd Conditional", tresc: "If we lived in Paris, we ___ French every day.", poprawna: "would speak", opcje: ["speak", "spoke", "will speak", "would speak"] },
+{ typ: "0 Conditional", tresc: "If you touch a fire, you ___ burned.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If he ___ hard, he will pass the test.", poprawna: "studies", opcje: ["study", "studies", "studied", "will study"] },
+{ typ: "2nd Conditional", tresc: "If I had his number, I ___ him.", poprawna: "would call", opcje: ["call", "called", "will call", "would call"] },
+{ typ: "0 Conditional", tresc: "If it is winter, it ___ cold outside.", poprawna: "is", opcje: ["is", "are", "was", "will be"] },
+{ typ: "1st Conditional", tresc: "They will win the match if they ___ well.", poprawna: "play", opcje: ["play", "plays", "played", "will play"] },
+{ typ: "2nd Conditional", tresc: "I would buy a yacht if I ___ rich.", poprawna: "were", opcje: ["am", "is", "were", "have been"] },
+{ typ: "0 Conditional", tresc: "If you press this button, the machine ___.", poprawna: "starts", opcje: ["start", "starts", "started", "will start"] },
+{ typ: "1st Conditional", tresc: "If she doesn't apologize, I ___ her.", poprawna: "won't forgive", opcje: ["don't forgive", "didn't forgive", "won't forgive", "wouldn't forgive"] },
+{ typ: "2nd Conditional", tresc: "If animals could talk, what ___?", poprawna: "would they say", opcje: ["do they say", "did they say", "will they say", "would they say"] },
+{ typ: "0 Conditional", tresc: "Ice turns to water if you ___ it.", poprawna: "warm", opcje: ["warm", "warms", "warmed", "will warm"] },
+{ typ: "1st Conditional", tresc: "If we take a taxi, we ___ on time.", poprawna: "will arrive", opcje: ["arrive", "arrived", "will arrive", "would arrive"] },
+{ typ: "2nd Conditional", tresc: "He would travel more if he ___ afraid of flying.", poprawna: "weren't", opcje: ["isn't", "wasn't", "weren't", "wouldn't be"] },
+{ typ: "0 Conditional", tresc: "If you multiply 2 by 5, you ___ 10.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "I will be very angry if you ___ my cake.", poprawna: "eat", opcje: ["eat", "eats", "ate", "will eat"] },
+{ typ: "2nd Conditional", tresc: "If she ___ less, she would lose weight.", poprawna: "ate", opcje: ["eat", "eats", "ate", "would eat"] },
+{ typ: "0 Conditional", tresc: "If a dog sees a cat, it usually ___ it.", poprawna: "chases", opcje: ["chase", "chases", "chased", "will chase"] },
+{ typ: "1st Conditional", tresc: "If you tell me the truth, I ___ mad.", poprawna: "won't be", opcje: ["am not", "wasn't", "won't be", "wouldn't be"] },
+{ typ: "2nd Conditional", tresc: "What would you buy if you ___ a shopping mall?", poprawna: "owned", opcje: ["own", "owns", "owned", "would own"] },
+{ typ: "0 Conditional", tresc: "If you stand in the rain without an umbrella, you ___ wet.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If it snows this weekend, we ___ a snowman.", poprawna: "will build", opcje: ["build", "built", "will build", "would build"] },
+{ typ: "2nd Conditional", tresc: "If I didn't have to work, I ___ all day.", poprawna: "would sleep", opcje: ["sleep", "slept", "will sleep", "would sleep"] },
+{ typ: "0 Conditional", tresc: "If you cut your finger, it ___.", poprawna: "bleeds", opcje: ["bleed", "bleeds", "bled", "will bleed"] },
+{ typ: "1st Conditional", tresc: "I will text you if I ___ any news.", poprawna: "hear", opcje: ["hear", "hears", "heard", "will hear"] },
+{ typ: "2nd Conditional", tresc: "If he ___ a better job, he wouldn't complain so much.", poprawna: "had", opcje: ["has", "have", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you don't water plants, they ___.", poprawna: "die", opcje: ["die", "dies", "died", "will die"] },
+{ typ: "1st Conditional", tresc: "If we don't protect pandas, they ___ extinct.", poprawna: "will become", opcje: ["become", "became", "will become", "would become"] },
+{ typ: "2nd Conditional", tresc: "I would read more books if I ___ more time.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you close your eyes, you ___ nothing.", poprawna: "see", opcje: ["see", "sees", "saw", "will see"] },
+{ typ: "1st Conditional", Conditional: "If you eat all that chocolate, you ___ sick.", poprawna: "will feel", opcje: ["feel", "felt", "will feel", "would feel"] },
+{ typ: "2nd Conditional", tresc: "If we ___ a map, we wouldn't be lost.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If the sun goes down, it ___ dark.", poprawna: "gets", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If you study conditionals, your English ___.", poprawna: "will improve", opcje: ["improve", "improved", "will improve", "would improve"] },
+{ typ: "0 Conditional", tresc: "If you mix red and yellow, you ___ orange.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If the weather is nice, we ___ for a walk.", poprawna: "will go", opcje: ["go", "went", "will go", "would go"] },
+{ typ: "2nd Conditional", tresc: "If I ___ a dog, I would name him Rex.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you put ice in the sun, it ___.", poprawna: "melts", opcje: ["melt", "melts", "will melt", "would melt"] },
+{ typ: "1st Conditional", tresc: "If you don't sleep, you ___ tired tomorrow.", poprawna: "will be", opcje: ["are", "were", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "If she ___ younger, she would travel more.", poprawna: "were", opcje: ["is", "was", "were", "had been"] },
+{ typ: "0 Conditional", tresc: "If you boil water, it ___ into steam.", poprawna: "turns", opcje: ["turn", "turns", "turned", "will turn"] },
+{ typ: "1st Conditional", tresc: "I will tell him if I ___ him today.", poprawna: "see", opcje: ["see", "sees", "saw", "will see"] },
+{ typ: "2nd Conditional", tresc: "What would you do if you ___ your wallet?", poprawna: "lost", opcje: ["lose", "loses", "lost", "would lose"] },
+{ typ: "0 Conditional", tresc: "If a baby is hungry, it usually ___.", poprawna: "cries", opcje: ["cry", "cries", "cried", "will cry"] },
+{ typ: "1st Conditional", tresc: "If we run, we ___ the bus.", poprawna: "will catch", opcje: ["catch", "caught", "will catch", "would catch"] },
+{ typ: "2nd Conditional", tresc: "If I ___ Spanish, I would move to Spain.", poprawna: "spoke", opcje: ["speak", "speaks", "spoke", "would speak"] },
+{ typ: "0 Conditional", tresc: "If you mix black and white, you ___ grey.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If he calls, I ___ answer.", poprawna: "won't", opcje: ["don't", "didn't", "won't", "wouldn't"] },
+{ typ: "2nd Conditional", tresc: "If I were a bird, I ___ everywhere.", poprawna: "would fly", opcje: ["fly", "flew", "will fly", "would fly"] },
+{ typ: "0 Conditional", tresc: "Water ___ at 0 degrees Celsius.", poprawna: "freezes", opcje: ["freeze", "freezes", "froze", "will freeze"] },
+{ typ: "1st Conditional", tresc: "If you drop that glass, it ___.", poprawna: "will break", opcje: ["breaks", "broke", "will break", "would break"] },
+{ typ: "2nd Conditional", tresc: "If he ___ more carefully, he wouldn't have so many accidents.", poprawna: "drove", opcje: ["drive", "drives", "drove", "would drive"] },
+{ typ: "0 Conditional", tresc: "If you heat metal, it ___.", poprawna: "expands", opcje: ["expand", "expands", "expanded", "will expand"] },
+{ typ: "1st Conditional", tresc: "If they don't arrive soon, we ___ dinner without them.", poprawna: "will start", opcje: ["start", "started", "will start", "would start"] },
+{ typ: "2nd Conditional", tresc: "She would buy a new car if she ___ the money.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you don't brush your teeth, you ___ cavities.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "I will buy it if it ___ too expensive.", poprawna: "isn't", opcje: ["isn't", "wasn't", "won't be", "wouldn't be"] },
+{ typ: "2nd Conditional", tresc: "If I ___ the President, I would change the law.", poprawna: "were", opcje: ["am", "is", "were", "have been"] },
+{ typ: "0 Conditional", tresc: "If you leave milk out, it ___ sour.", poprawna: "goes", opcje: ["go", "goes", "went", "will go"] },
+{ typ: "1st Conditional", tresc: "If you don't wear a coat, you ___ cold.", poprawna: "will get", opcje: ["get", "got", "will get", "would get"] },
+{ typ: "2nd Conditional", tresc: "I would tell you if I ___ the secret.", poprawna: "knew", opcje: ["know", "knows", "knew", "would know"] },
+{ typ: "0 Conditional", tresc: "If you mix salt and water, the salt ___.", poprawna: "dissolves", opcje: ["dissolve", "dissolves", "dissolved", "will dissolve"] },
+{ typ: "1st Conditional", tresc: "If she ___ her exams, she will go to university.", poprawna: "passes", opcje: ["pass", "passes", "passed", "will pass"] },
+{ typ: "2nd Conditional", tresc: "If we had a garden, we ___ our own vegetables.", poprawna: "would grow", opcje: ["grow", "grew", "will grow", "would grow"] },
+{ typ: "0 Conditional", tresc: "If you touch boiling water, it ___.", poprawna: "hurts", opcje: ["hurt", "hurts", "hurting", "will hurt"] },
+{ typ: "1st Conditional", tresc: "If we miss the train, we ___ a taxi.", poprawna: "will take", opcje: ["take", "took", "will take", "would take"] },
+{ typ: "2nd Conditional", tresc: "If I ___ play the guitar, I would join a band.", poprawna: "could", opcje: ["can", "could", "will be able", "would can"] },
+{ typ: "0 Conditional", tresc: "People get fat if they ___ too much junk food.", poprawna: "eat", opcje: ["eat", "eats", "ate", "will eat"] },
+{ typ: "1st Conditional", tresc: "If I finish work early, I ___ you a call.", poprawna: "will give", opcje: ["give", "gave", "will give", "would give"] },
+{ typ: "2nd Conditional", tresc: "He would be healthier if he ___ smoking.", poprawna: "stopped", opcje: ["stop", "stops", "stopped", "would stop"] },
+{ typ: "0 Conditional", tresc: "If you plug in the lamp, it ___ on.", poprawna: "turns", opcje: ["turn", "turns", "turned", "will turn"] },
+{ typ: "1st Conditional", tresc: "We will go to the beach if it ___ sunny tomorrow.", poprawna: "is", opcje: ["is", "was", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "If I saw a robbery, I ___ the police.", poprawna: "would call", opcje: ["call", "called", "will call", "would call"] },
+{ typ: "0 Conditional", tresc: "If you press the switch, the light ___ on.", poprawna: "comes", opcje: ["come", "comes", "came", "will come"] },
+{ typ: "1st Conditional", tresc: "If you leave now, you ___ the beginning of the movie.", poprawna: "won't miss", opcje: ["don't miss", "didn't miss", "won't miss", "wouldn't miss"] },
+{ typ: "2nd Conditional", tresc: "If she ___ more friendly, people would like her more.", poprawna: "were", opcje: ["is", "was", "were", "had been"] },
+{ typ: "0 Conditional", tresc: "Wood ___ if you throw it in the fire.", poprawna: "burns", opcje: ["burn", "burns", "burned", "will burn"] },
+{ typ: "1st Conditional", tresc: "If I ___ the recipe, I will bake a cake.", poprawna: "find", opcje: ["find", "finds", "found", "will find"] },
+{ typ: "2nd Conditional", tresc: "They would go to the concert if they ___ tickets.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you look at the sun, it ___ your eyes.", poprawna: "damages", opcje: ["damage", "damages", "damaged", "will damage"] },
+{ typ: "1st Conditional", tresc: "If he doesn't listen, he ___ a mistake.", poprawna: "will make", opcje: ["makes", "made", "will make", "would make"] },
+{ typ: "2nd Conditional", tresc: "If I lived by the sea, I ___ swimming every day.", poprawna: "would go", opcje: ["go", "went", "will go", "would go"] },
+{ typ: "0 Conditional", tresc: "If the wind blows hard, the trees ___.", poprawna: "move", opcje: ["move", "moves", "moved", "will move"] },
+{ typ: "1st Conditional", tresc: "I will send you the document if you ___ me your email.", poprawna: "give", opcje: ["give", "gives", "gave", "will give"] },
+{ typ: "0 Conditional", tresc: "If you heat ice cream, it ___.", poprawna: "melts", opcje: ["melt", "melts", "melted", "will melt"] },
+{ typ: "1st Conditional", tresc: "If you don't study, you ___ the test.", poprawna: "will fail", opcje: ["fail", "failed", "will fail", "would fail"] },
+{ typ: "2nd Conditional", tresc: "If I ___ taller, I would play basketball.", poprawna: "were", opcje: ["am", "was", "were", "will be"] },
+{ typ: "0 Conditional", tresc: "If a dog is happy, it ___ its tail.", poprawna: "wags", opcje: ["wag", "wags", "wagged", "will wag"] },
+{ typ: "1st Conditional", tresc: "If we ___ early, we will find good seats.", poprawna: "arrive", opcje: ["arrive", "arrives", "arrived", "will arrive"] },
+{ typ: "2nd Conditional", tresc: "If she knew his address, she ___ him a letter.", poprawna: "would send", opcje: ["send", "sends", "will send", "would send"] },
+{ typ: "0 Conditional", tresc: "If you cross an international date line, the time ___.", poprawna: "changes", opcje: ["change", "changes", "changed", "will change"] },
+{ typ: "1st Conditional", tresc: "I will make dinner if you ___ the dishes.", poprawna: "wash", opcje: ["wash", "washes", "washed", "will wash"] },
+{ typ: "2nd Conditional", tresc: "What would you do if you ___ a ghost?", poprawna: "saw", opcje: ["see", "sees", "saw", "would see"] },
+{ typ: "0 Conditional", tresc: "If you throw a stone into water, it ___.", poprawna: "sinks", opcje: ["sink", "sinks", "sank", "will sink"] },
+{ typ: "1st Conditional", tresc: "If he ___ the truth, I will forgive him.", poprawna: "tells", opcje: ["tell", "tells", "told", "will tell"] },
+{ typ: "2nd Conditional", tresc: "If I ___ a car, I would drive to work.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you don't drink water, you ___ thirsty.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "We ___ late if we don't leave right now.", poprawna: "will be", opcje: ["are", "were", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "She ___ better if she practiced more.", poprawna: "would play", opcje: ["plays", "played", "will play", "would play"] },
+{ typ: "0 Conditional", tresc: "If it snows, the roads ___ slippery.", poprawna: "are", opcje: ["is", "are", "was", "will be"] },
+{ typ: "1st Conditional", tresc: "If they invite us, we ___ them a gift.", poprawna: "will buy", opcje: ["buy", "bought", "will buy", "would buy"] },
+{ typ: "2nd Conditional", tresc: "If we ___ in the city, we would use public transport.", poprawna: "lived", opcje: ["live", "lives", "lived", "would live"] },
+{ typ: "0 Conditional", tresc: "If you eat too much sugar, it ___ bad for your teeth.", poprawna: "is", opcje: ["is", "are", "be", "will be"] },
+{ typ: "1st Conditional", tresc: "If the movie is boring, I ___ it.", poprawna: "won't watch", opcje: ["don't watch", "didn't watch", "won't watch", "wouldn't watch"] },
+{ typ: "2nd Conditional", tresc: "I wouldn't say that if I ___ you.", poprawna: "were", opcje: ["am", "is", "were", "had been"] },
+{ typ: "0 Conditional", tresc: "If you pour oil on water, it ___.", poprawna: "floats", opcje: ["float", "floats", "floated", "will float"] },
+{ typ: "1st Conditional", tresc: "If she doesn't hurry, she ___ the flight.", poprawna: "will miss", opcje: ["misses", "missed", "will miss", "would miss"] },
+{ typ: "2nd Conditional", tresc: "If he ___ more time, he would learn to play the piano.", poprawna: "had", opcje: ["has", "have", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If the sun shines, the snow ___.", poprawna: "melts", opcje: ["melt", "melts", "melted", "will melt"] },
+{ typ: "1st Conditional", tresc: "I will call the police if you ___ leave.", poprawna: "don't", opcje: ["don't", "doesn't", "didn't", "won't"] },
+{ typ: "2nd Conditional", tresc: "If I found a wallet in the street, I ___ it to the police.", poprawna: "would take", opcje: ["take", "took", "will take", "would take"] },
+{ typ: "0 Conditional", tresc: "If you drop an egg, it ___.", poprawna: "breaks", opcje: ["break", "breaks", "broke", "will break"] },
+{ typ: "1st Conditional", tresc: "If we save enough money, we ___ to Japan.", poprawna: "will travel", opcje: ["travel", "traveled", "will travel", "would travel"] },
+{ typ: "2nd Conditional", tresc: "She would pass the exam if she ___ harder.", poprawna: "studied", opcje: ["study", "studies", "studied", "would study"] },
+{ typ: "0 Conditional", tresc: "If you stand in the sun too long, you ___ a sunburn.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If you eat all the cake, you ___ sick.", poprawna: "will feel", opcje: ["feel", "felt", "will feel", "would feel"] },
+{ typ: "2nd Conditional", tresc: "If it ___ snowing, we would go outside.", poprawna: "stopped", opcje: ["stop", "stops", "stopped", "would stop"] },
+{ typ: "0 Conditional", tresc: "If you mix blue and red, you ___ purple.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "I will be surprised if he ___ the race.", poprawna: "wins", opcje: ["win", "wins", "won", "will win"] },
+{ typ: "2nd Conditional", tresc: "If I ___ how to code, I would build an app.", poprawna: "knew", opcje: ["know", "knows", "knew", "would know"] },
+{ typ: "0 Conditional", tresc: "If an engine runs out of oil, it ___.", poprawna: "stops", opcje: ["stop", "stops", "stopped", "will stop"] },
+{ typ: "1st Conditional", tresc: "If they ___ early, we will start without them.", poprawna: "don't come", opcje: ["don't come", "didn't come", "won't come", "wouldn't come"] },
+{ typ: "2nd Conditional", tresc: "I would go to the party if I ___ so tired.", poprawna: "weren't", opcje: ["isn't", "wasn't", "weren't", "wouldn't be"] },
+{ typ: "0 Conditional", tresc: "If you don't sleep for days, you ___ hallucinations.", poprawna: "have", opcje: ["have", "has", "had", "will have"] },
+{ typ: "1st Conditional", tresc: "If the weather is bad, we ___ the picnic.", poprawna: "will cancel", opcje: ["cancel", "canceled", "will cancel", "would cancel"] },
+{ typ: "2nd Conditional", tresc: "If he ___ less fast, he wouldn't get tickets.", poprawna: "drove", opcje: ["drive", "drives", "drove", "would drive"] },
+{ typ: "0 Conditional", tresc: "If you multiply 5 by 5, the answer ___ 25.", poprawna: "is", opcje: ["is", "are", "was", "will be"] },
+{ typ: "1st Conditional", tresc: "If you tell a lie, nobody ___ you again.", poprawna: "will believe", opcje: ["believe", "believes", "will believe", "would believe"] },
+{ typ: "2nd Conditional", tresc: "If I had a lot of money, I ___ to work.", poprawna: "wouldn't have", opcje: ["don't have", "didn't have", "won't have", "wouldn't have"] },
+{ typ: "0 Conditional", tresc: "If a plant gets no sunlight, it ___.", poprawna: "dies", opcje: ["die", "dies", "died", "will die"] },
+{ typ: "1st Conditional", tresc: "I will help you with your homework if I ___ time.", poprawna: "have", opcje: ["have", "has", "had", "will have"] },
+{ typ: "2nd Conditional", tresc: "We would travel to Mars if we ___ a spaceship.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you leave cheese out, it ___ bad.", poprawna: "goes", opcje: ["go", "goes", "went", "will go"] },
+{ typ: "1st Conditional", tresc: "If she finds my keys, she ___ me.", poprawna: "will call", opcje: ["call", "calls", "will call", "would call"] },
+{ typ: "0 Conditional", tresc: "If you hit a drum, it ___ a sound.", poprawna: "makes", opcje: ["make", "makes", "made", "will make"] },
+{ typ: "1st Conditional", tresc: "If we leave now, we ___ on time.", poprawna: "will arrive", opcje: ["arrive", "arrived", "will arrive", "would arrive"] },
+{ typ: "2nd Conditional", tresc: "If she had a faster car, she ___ the race.", poprawna: "would win", opcje: ["wins", "won", "will win", "would win"] },
+{ typ: "0 Conditional", tresc: "If you put sugar in coffee, it ___ sweet.", poprawna: "becomes", opcje: ["become", "becomes", "became", "will become"] },
+{ typ: "1st Conditional", tresc: "If it rains tomorrow, the grass ___.", poprawna: "will grow", opcje: ["grows", "grew", "will grow", "would grow"] },
+{ typ: "2nd Conditional", tresc: "If I were a cat, I ___ all day.", poprawna: "would sleep", opcje: ["sleep", "slept", "will sleep", "would sleep"] },
+{ typ: "0 Conditional", tresc: "If you touch a cactus, it ___.", poprawna: "pricks", opcje: ["prick", "pricks", "pricked", "will prick"] },
+{ typ: "1st Conditional", tresc: "I will be happy if you ___ to my party.", poprawna: "come", opcje: ["come", "comes", "came", "will come"] },
+{ typ: "2nd Conditional", tresc: "If we didn't have to work, we ___ around the world.", poprawna: "would travel", opcje: ["travel", "traveled", "will travel", "would travel"] },
+{ typ: "0 Conditional", tresc: "If babies are scared, they ___.", poprawna: "cry", opcje: ["cry", "cries", "cried", "will cry"] },
+{ typ: "1st Conditional", tresc: "If she doesn't study, she ___ the exam.", poprawna: "won't pass", opcje: ["doesn't pass", "didn't pass", "won't pass", "wouldn't pass"] },
+{ typ: "2nd Conditional", tresc: "He ___ more friends if he were nicer.", poprawna: "would have", opcje: ["has", "have", "will have", "would have"] },
+{ typ: "0 Conditional", tresc: "If you don't eat vegetables, you ___ vitamins.", poprawna: "lack", opcje: ["lack", "lacks", "lacked", "will lack"] },
+{ typ: "1st Conditional", tresc: "If the train is delayed, I ___ late.", poprawna: "will be", opcje: ["am", "was", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "If I knew his email, I ___ him a message.", poprawna: "would send", opcje: ["send", "sends", "will send", "would send"] },
+{ typ: "0 Conditional", tresc: "If you drop a feather, it ___ slowly.", poprawna: "falls", opcje: ["fall", "falls", "fell", "will fall"] },
+{ typ: "1st Conditional", tresc: "If we ___ enough money, we will buy a new TV.", poprawna: "save", opcje: ["save", "saves", "saved", "will save"] },
+{ typ: "2nd Conditional", tresc: "She would buy a mansion if she ___ a millionaire.", poprawna: "were", opcje: ["is", "was", "were", "had been"] },
+{ typ: "0 Conditional", tresc: "If it gets cold, water ___ into ice.", poprawna: "turns", opcje: ["turn", "turns", "turned", "will turn"] },
+{ typ: "1st Conditional", tresc: "I will open the window if you ___ too hot.", poprawna: "are", opcje: ["are", "were", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "What would you do if you ___ a dinosaur?", poprawna: "saw", opcje: ["see", "sees", "saw", "would see"] },
+{ typ: "0 Conditional", tresc: "If you press the brake pedal, the car ___.", poprawna: "stops", opcje: ["stop", "stops", "stopped", "will stop"] },
+{ typ: "1st Conditional", tresc: "If she ___ the job, she will move to London.", poprawna: "gets", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "2nd Conditional", tresc: "If I had a boat, I ___ the ocean.", poprawna: "would sail", opcje: ["sail", "sails", "will sail", "would sail"] },
+{ typ: "0 Conditional", tresc: "If you don't exercise, you ___ weak.", poprawna: "become", opcje: ["become", "becomes", "became", "will become"] },
+{ typ: "1st Conditional", tresc: "If they don't invite him, he ___ upset.", poprawna: "will be", opcje: ["is", "was", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "I would learn Japanese if I ___ in Tokyo.", poprawna: "lived", opcje: ["live", "lives", "lived", "would live"] },
+{ typ: "0 Conditional", tresc: "If you mix yellow and blue, you ___ green.", poprawna: "get", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "If we ___ a taxi, we will arrive faster.", poprawna: "take", opcje: ["take", "takes", "took", "will take"] },
+{ typ: "2nd Conditional", tresc: "If she ___ more confident, she would speak in public.", poprawna: "were", opcje: ["is", "was", "were", "would be"] },
+{ typ: "0 Conditional", tresc: "If an apple falls, it ___ the ground.", poprawna: "hits", opcje: ["hit", "hits", "hit", "will hit"] },
+{ typ: "1st Conditional", tresc: "We will order pizza if you ___ to cook.", poprawna: "don't want", opcje: ["don't want", "didn't want", "won't want", "wouldn't want"] },
+{ typ: "2nd Conditional", tresc: "If I were the boss, I ___ everyone a raise.", poprawna: "would give", opcje: ["give", "gave", "will give", "would give"] },
+{ typ: "0 Conditional", tresc: "If people eat too much candy, their teeth ___.", poprawna: "rot", opcje: ["rot", "rots", "rotted", "will rot"] },
+{ typ: "1st Conditional", tresc: "I will wait for you if you ___ late.", poprawna: "are", opcje: ["are", "were", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "If he ___ less television, he would read more.", poprawna: "watched", opcje: ["watch", "watches", "watched", "would watch"] },
+{ typ: "0 Conditional", tresc: "If a tire gets a hole, it ___ flat.", poprawna: "goes", opcje: ["go", "goes", "went", "will go"] },
+{ typ: "1st Conditional", tresc: "If they ___ the tickets, they will go to the concert.", poprawna: "buy", opcje: ["buy", "buys", "bought", "will buy"] },
+{ typ: "2nd Conditional", tresc: "I would be surprised if she ___ the truth.", poprawna: "told", opcje: ["tell", "tells", "told", "would tell"] },
+{ typ: "0 Conditional", tresc: "If you cut an onion, your eyes ___.", poprawna: "water", opcje: ["water", "waters", "watered", "will water"] },
+{ typ: "1st Conditional", tresc: "If it is sunny tomorrow, we ___ to the beach.", poprawna: "will go", opcje: ["go", "went", "will go", "would go"] },
+{ typ: "2nd Conditional", tresc: "If I found a magic lamp, I ___ for three things.", poprawna: "would wish", opcje: ["wish", "wished", "will wish", "would wish"] },
+{ typ: "0 Conditional", tresc: "If you leave chocolate in the sun, it ___.", poprawna: "melts", opcje: ["melt", "melts", "melted", "will melt"] },
+{ typ: "1st Conditional", tresc: "If she doesn't sleep well, she ___ grumpy.", poprawna: "will be", opcje: ["is", "was", "will be", "would be"] },
+{ typ: "2nd Conditional", tresc: "He ___ a better athlete if he trained every day.", poprawna: "would be", opcje: ["is", "was", "will be", "would be"] },
+{ typ: "0 Conditional", tresc: "If you don't feed a pet, it ___ hungry.", poprawna: "gets", opcje: ["get", "gets", "got", "will get"] },
+{ typ: "1st Conditional", tresc: "I will call my mom if I ___ my phone.", poprawna: "find", opcje: ["find", "finds", "found", "will find"] },
+{ typ: "2nd Conditional", tresc: "If we ___ a bigger house, we would invite more guests.", poprawna: "had", opcje: ["have", "has", "had", "would have"] },
+{ typ: "0 Conditional", tresc: "If you throw paper in the fire, it ___.", poprawna: "burns", opcje: ["burn", "burns", "burned", "will burn"] },
+{ typ: "1st Conditional", tresc: "If you ask politely, he ___ you.", poprawna: "will help", opcje: ["help", "helps", "will help", "would help"] }
         ];
 
+        // KONFIGURACJA QUIZU
+        const iloscPytanWQuizie = 15; 
+        let wylosowanePytania = []; // Tu będą trafiać pytania wylosowane na daną rundę
         let aktualnyIndeks = 0;
         let punkty = 0;
+
+        // UNIWERSALNA FUNKCJA TASUJĄCA
+        function tasuj(tablica) {
+            for (let i = tablica.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tablica[i], tablica[j]] = [tablica[j], tablica[i]];
+            }
+        }
 
         function pokazPytanie() {
             document.getElementById('wynik').innerHTML = "";
             document.getElementById('wyjasnienie').innerHTML = "";
             document.getElementById('nastepne').style.display = "none";
+            document.getElementById('zagrajPonownie').style.display = "none";
 
-            let obecnePytanie = bazaPytan[aktualnyIndeks];
+            // Pobieramy pytanie z naszej 15-elementowej puli
+            let obecnePytanie = wylosowanePytania[aktualnyIndeks];
             document.getElementById('pytanie').innerHTML = obecnePytanie.tresc;
-            document.getElementById('postep').innerHTML = "Pytanie " + (aktualnyIndeks + 1) + " z " + bazaPytan.length;
+            document.getElementById('postep').innerHTML = "Pytanie " + (aktualnyIndeks + 1) + " z " + wylosowanePytania.length;
+
+            // Tasowanie odpowiedzi
+            let pomieszaneOpcje = [...obecnePytanie.opcje]; // Tworzymy kopię odpowiedzi, żeby nie zepsuć bazy
+            tasuj(pomieszaneOpcje);
 
             let przyciskiHTML = "";
-            for (let i = 0; i < obecnePytanie.opcje.length; i++) {
-                let opcja = obecnePytanie.opcje[i];
+            for (let i = 0; i < pomieszaneOpcje.length; i++) {
+                let opcja = pomieszaneOpcje[i];
                 przyciskiHTML += `<button onclick="sprawdz(this, '${opcja}')">${opcja}</button>`;
             }
             document.getElementById('odpowiedzi').innerHTML = przyciskiHTML;
         }
 
         function sprawdz(kliknietyPrzycisk, wybranaOdpowiedz) {
-            let obecnePytanie = bazaPytan[aktualnyIndeks];
+            let obecnePytanie = wylosowanePytania[aktualnyIndeks];
             let poleWyniku = document.getElementById('wynik');
             let poleWyjasnienia = document.getElementById('wyjasnienie');
             
@@ -105,30 +326,46 @@
         function nastepnePytanie() {
             aktualnyIndeks++;
             
-            if (aktualnyIndeks < bazaPytan.length) {
+            if (aktualnyIndeks < wylosowanePytania.length) {
                 pokazPytanie();
             } else {
-                // TUTAJ ZNAJDUJE SIĘ NOWY KOD ODPOWIEDZIALNY ZA OCENĘ
+                // Nowe progi oceniania dopasowane do 15 pytań
                 let ocenaTekst = "";
-                if (punkty >= 18) {
+                if (punkty >= 14) {
                     ocenaTekst = "Rewelacja! Jesteś mistrzem okresów warunkowych. 🏆";
-                } else if (punkty >= 14) {
+                } else if (punkty >= 11) {
                     ocenaTekst = "Bardzo dobrze! Masz solidne podstawy. 👍";
-                } else if (punkty >= 10) {
+                } else if (punkty >= 8) {
                     ocenaTekst = "Nieźle, ale warto jeszcze trochę poćwiczyć. 📚";
                 } else {
                     ocenaTekst = "Ups, chyba musisz powtórzyć ten materiał. Nie poddawaj się! 💪";
                 }
 
                 document.getElementById('postep').innerHTML = "";
-                document.getElementById('pytanie').innerHTML = "Koniec quizu! Twój wynik: " + punkty + "/" + bazaPytan.length + "<br><br>" + ocenaTekst;
+                document.getElementById('pytanie').innerHTML = "Koniec quizu! Twój wynik: " + punkty + "/" + wylosowanePytania.length + "<br><br>" + ocenaTekst;
                 
                 document.getElementById('odpowiedzi').innerHTML = ""; 
                 document.getElementById('wyjasnienie').innerHTML = ""; 
                 document.getElementById('nastepne').style.display = "none";
+                document.getElementById('zagrajPonownie').style.display = "inline-block";
             }
         }
 
+        function resetujQuiz() {
+            aktualnyIndeks = 0;
+            punkty = 0;
+            document.getElementById('licznik').innerHTML = "Punkty: 0";
+            
+            // Przy każdym restarcie bierzemy całą bazę, tasujemy ją i obcinamy do 15
+            tasuj(bazaPytan); 
+            wylosowanePytania = bazaPytan.slice(0, iloscPytanWQuizie);
+            
+            pokazPytanie();
+        }
+
+        // Start apki - tasujemy całą bazę, wybieramy 15 i odpalamy
+        tasuj(bazaPytan);
+        wylosowanePytania = bazaPytan.slice(0, iloscPytanWQuizie);
         pokazPytanie();
     </script>
 </body>
